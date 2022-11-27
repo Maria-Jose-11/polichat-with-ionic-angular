@@ -1,0 +1,47 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>PoliChat
+      <ion-icon color="secondary" name="chatbubbles"></ion-icon>
+    </ion-title>
+    <ion-buttons slot="end">Log Out
+      <!-- <ion-title slot="icon-only">Log Out</ion-title> -->
+      <ion-button fill="clear" (click)="logout()">
+        <ion-icon color="secondary" name="log-out" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <b>{{this.user}}</b>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-grid>
+    <ion-row *ngFor="let message of messages | async">
+      <ion-col size="9" class="message" [offset]="message.myMsg ? 3 : 0"
+        [ngClass]="{'my-message':message.myMsg,'other-message':!message.myMsg}">
+
+        <b>{{message.fromName}}:</b><br>
+        <span>{{message.msg}}</span>
+        <img *ngIf="message.img !== ''" [src]="message.img" id="idea-img">
+        <div class="time ion-text-right"><br>{{message.createAt?.toMillis() | date:'short'}}</div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-textarea autoGrow="true" row="1" maxLength="500" placeholder="Escribe un mensaje..."  [(ngModel)]="newMsg"></ion-textarea>
+    <ion-button fill="clear" slot="end" (click)="preimagen = true">
+      <ion-icon color="secondary" name="images"></ion-icon> &nbsp; 
+      <input (change)="upload()" id="file" type="file" multiple style="width: 50px;" (click)="preimagen = true"/>
+      
+    </ion-button>
+    
+    <ion-buttons slot="end">
+      <ion-button (click)="sendMessage()">
+        <ion-icon color="secondary" name="send"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+  <img *ngIf="preimagen === true" [src]="img" id="idea-img">
+</ion-footer>
